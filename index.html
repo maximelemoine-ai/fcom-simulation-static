@@ -11,6 +11,92 @@
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
           sans-serif;
       }
+
+      /* Design system tokens (approximate – tweak to match Figma) */
+      :root {
+        --ds-color-primary: #0ea5e9;
+        --ds-color-primary-strong: #0284c7;
+        --ds-color-primary-soft: #e0f2fe;
+        --ds-color-on-primary: #ffffff;
+        --ds-color-border-soft: #e2e8f0;
+        --ds-color-border-strong: #cbd5f5;
+      }
+
+      .ds-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        padding-inline: 1.25rem;
+        height: 2.5rem;
+        border-width: 1px;
+        border-style: solid;
+        border-color: transparent;
+        transition:
+          background-color 150ms ease,
+          color 150ms ease,
+          box-shadow 150ms ease,
+          transform 120ms ease;
+        cursor: pointer;
+      }
+
+      .ds-btn--primary {
+        background: radial-gradient(
+          circle at top left,
+          var(--ds-color-primary),
+          var(--ds-color-primary-strong)
+        );
+        color: var(--ds-color-on-primary);
+        border-color: transparent;
+        box-shadow: 0 12px 30px rgba(14, 165, 233, 0.35);
+      }
+
+      .ds-btn--primary:hover {
+        background: radial-gradient(
+          circle at top left,
+          var(--ds-color-primary-strong),
+          var(--ds-color-primary)
+        );
+        transform: translateY(-1px);
+      }
+
+      .ds-btn--primary:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 16px rgba(15, 118, 110, 0.35);
+      }
+
+      .ds-btn--ghost {
+        background-color: transparent;
+        color: var(--ds-color-primary-strong);
+        border-color: var(--ds-color-border-soft);
+      }
+
+      .ds-btn--ghost:hover {
+        background-color: var(--ds-color-primary-soft);
+        border-color: var(--ds-color-primary-soft);
+      }
+
+      .ds-btn--segmented {
+        height: 2.25rem;
+        padding-inline: 1rem;
+        border-radius: 9999px;
+      }
+
+      .ds-btn--segmented-active {
+        background-color: #ffffff;
+        color: #020617;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        border-color: var(--ds-color-border-soft);
+      }
+
+      .ds-btn--segmented-inactive {
+        background-color: transparent;
+        color: #64748b;
+        border-color: transparent;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-slate-100 text-slate-900">
@@ -86,7 +172,7 @@
       <!-- Back button -->
       <button
         type="button"
-        class="absolute left-0 top-0 flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium text-sky-600 hover:bg-sky-50"
+        class="absolute left-0 top-0 ds-btn ds-btn--ghost gap-2 px-4"
       >
         <span
           class="inline-block h-3 w-3 -rotate-180 border-r-2 border-t-2 border-sky-600"
@@ -471,7 +557,7 @@
       </section>
 
       <!-- Right column: summary card -->
-      <aside class="mt-2 w-[380px] shrink-0">
+      <aside class="mt-2 w-[380px] shrink-0 sticky top-24 self-start">
         <div class="rounded-2xl bg-white p-6 shadow-lg shadow-black/10">
           <div
             class="mb-4 flex h-10 items-center rounded-full bg-slate-100 p-1 text-sm font-semibold"
@@ -479,14 +565,14 @@
             <button
               id="modeMonthly"
               type="button"
-              class="flex-1 rounded-full bg-white px-4 py-1 shadow-sm js-mode-toggle"
+              class="flex-1 ds-btn ds-btn--segmented ds-btn--segmented-active js-mode-toggle"
             >
               Monthly
             </button>
             <button
               id="modeAnnual"
               type="button"
-              class="flex-1 px-4 py-1 text-slate-500 js-mode-toggle"
+              class="flex-1 ds-btn ds-btn--segmented ds-btn--segmented-inactive js-mode-toggle"
             >
               Annually
             </button>
@@ -536,7 +622,7 @@
           <button
             id="finishButton"
             type="button"
-            class="mb-3 inline-flex h-10 w-full items-center justify-center rounded-full bg-sky-500 text-sm font-medium text-white shadow-md hover:bg-sky-600"
+            class="mb-3 w-full ds-btn ds-btn--primary"
           >
             Terminer
           </button>
@@ -661,11 +747,23 @@
           function setMode(mode) {
             const isMonthly = mode === "monthly";
 
-            monthlyBtn.classList.toggle("bg-white", isMonthly);
-            monthlyBtn.classList.toggle("text-slate-500", !isMonthly);
+            monthlyBtn.classList.toggle(
+              "ds-btn--segmented-active",
+              isMonthly
+            );
+            monthlyBtn.classList.toggle(
+              "ds-btn--segmented-inactive",
+              !isMonthly
+            );
 
-            annualBtn.classList.toggle("bg-white", !isMonthly);
-            annualBtn.classList.toggle("text-slate-500", isMonthly);
+            annualBtn.classList.toggle(
+              "ds-btn--segmented-active",
+              !isMonthly
+            );
+            annualBtn.classList.toggle(
+              "ds-btn--segmented-inactive",
+              isMonthly
+            );
 
             updateSimulation();
           }
